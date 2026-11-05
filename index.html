@@ -26,23 +26,18 @@ main {
 }
 
 h1 {
-  margin: 0;
   font-size: 25px;
+  margin: 0;
   color: #62d4a1;
 }
 
 h2 {
-  margin: 0 0 14px;
-  font-size: 18px;
+  font-size: 19px;
+  margin-top: 0;
 }
 
 h3 {
-  margin: 0 0 8px;
   font-size: 16px;
-}
-
-p {
-  margin: 9px 0;
 }
 
 small,
@@ -53,7 +48,7 @@ small,
 .panel {
   background: #172235;
   border: 1px solid #34445a;
-  border-radius: 17px;
+  border-radius: 16px;
   padding: 16px;
   margin-top: 15px;
 }
@@ -67,84 +62,50 @@ small,
 }
 
 .warning {
-  color: #ffd166;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.metric {
-  background: #101b2c;
-  padding: 12px;
-  border-radius: 12px;
-}
-
-.metric b {
-  display: block;
-  font-size: 17px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.card {
-  background: #101b2c;
-  border: 1px solid #34445a;
-  padding: 13px;
-  border-radius: 12px;
-  margin-top: 10px;
+  color: #ffd27a;
 }
 
 button {
+  background: #62d4a1;
+  color: #082218;
   border: none;
   border-radius: 10px;
-  padding: 11px 13px;
-  font: inherit;
+  padding: 12px 15px;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  margin: 5px 3px;
+  margin: 5px 0;
   min-height: 44px;
+}
+
+button.secondary {
+  background: #2b3a50;
+  color: white;
+}
+
+button.danger {
+  background: #63313a;
+  color: #ffe0e5;
 }
 
 button:disabled {
   opacity: 0.5;
 }
 
-.primary {
-  background: #62d4a1;
-  color: #082218;
-}
-
-.secondary {
-  background: #2b3a50;
-  color: white;
-}
-
-.danger {
-  background: #59302c;
-  color: #ffc2b8;
-}
-
 input,
 select {
   background: #101b2c;
-  border: 1px solid #526075;
   color: white;
+  border: 1px solid #526075;
   border-radius: 9px;
-  padding: 11px;
-  font: inherit;
+  padding: 10px;
+  font-size: 15px;
   max-width: 100%;
 }
 
-input[type="file"] {
+input[type="number"],
+input[type="text"],
+input[type="search"] {
   width: 100%;
 }
 
@@ -153,13 +114,29 @@ label {
   margin: 10px 0;
 }
 
-.result {
+.card {
   background: #101b2c;
-  padding: 12px;
+  border: 1px solid #34445a;
+  border-radius: 12px;
+  padding: 13px;
+  margin: 10px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.metric {
+  background: #101b2c;
   border-radius: 10px;
-  margin-top: 12px;
-  white-space: pre-line;
-  overflow-wrap: anywhere;
+  padding: 12px;
+}
+
+.metric strong {
+  display: block;
+  color: #62d4a1;
 }
 
 .bar {
@@ -167,7 +144,6 @@ label {
   background: #34445a;
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 7px;
 }
 
 .fill {
@@ -175,13 +151,30 @@ label {
   background: #62d4a1;
 }
 
+.result {
+  margin-top: 12px;
+  padding: 12px;
+  background: #101b2c;
+  border-radius: 10px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
 footer {
   color: #a9b5c8;
-  font-size: 13px;
+  font-size: 12px;
   margin-top: 25px;
 }
 
-@media(max-width: 380px) {
+@media (max-width: 380px) {
   .grid {
     grid-template-columns: 1fr;
   }
@@ -190,31 +183,31 @@ footer {
 </head>
 
 <body>
+
 <main>
 
 <header>
-  <h1>Daniel Trader Pro v8</h1>
-  <small>دستیار تحلیل بازار — نسخه آزمایشی</small>
+  <h1>Daniel Trader Pro</h1>
+  <small>نسخه ۸ — دستیار تحلیل بازار</small>
 </header>
 
 <section class="panel notice">
-  <h2>اطلاعیه مهم</h2>
+  <strong>حالت آزمایشی</strong>
   <p>
-    این برنامه فعلاً به حساب آبان‌تتر متصل نیست.
-    هیچ سفارش خرید یا فروش واقعی ثبت نمی‌کند.
-  </p>
-  <p class="muted">
-    سیگنال‌های نمایشی ساختگی هستند.
-    داده عمومی Kraken در صورت دسترسی اینترنت
-    به‌صورت جداگانه دریافت می‌شود.
+    این برنامه به حساب آبان‌تتر متصل نیست.
+    هیچ خرید یا فروش واقعی انجام نمی‌دهد.
+    سیگنال‌های نمونه صرفاً آموزشی هستند.
   </p>
 </section>
 
 <section class="panel">
   <h2>وضعیت اجرای برنامه</h2>
+
   <p id="appHealth" class="warning">
-    ⏳ در انتظار اجرای JavaScript
+    ⚠️ در انتظار اجرای جاوااسکریپت...
   </p>
+
+  <p id="errorStatus" class="muted"></p>
 </section>
 
 <section class="panel">
@@ -222,23 +215,23 @@ footer {
 
   <div class="grid">
     <div class="metric">
-      <small>نسخه</small>
-      <b>۸ آزمایشی</b>
+      <small>وضعیت موتور</small>
+      <strong id="engineState">در انتظار</strong>
     </div>
 
     <div class="metric">
       <small>معاملات واقعی</small>
-      <b>غیرفعال</b>
+      <strong>غیرفعال</strong>
+    </div>
+
+    <div class="metric">
+      <small>سیگنال‌های نمونه</small>
+      <strong>۳</strong>
     </div>
 
     <div class="metric">
       <small>داده عمومی</small>
-      <b>Kraken</b>
-    </div>
-
-    <div class="metric">
-      <small>تحلیل CSV</small>
-      <b>فعال</b>
+      <strong>Kraken</strong>
     </div>
   </div>
 </section>
@@ -257,531 +250,12 @@ footer {
   </label>
 
   <div id="signals"></div>
-  <div id="toast" class="result"></div>
+  <p id="toast" class="success"></p>
 </section>
 
 <section class="panel">
-  <h2>رتبه‌بندی آزمایشی بازارها</h2>
-
-  <label>
-    نوع بازار
-    <select id="marketFilter">
-      <option value="all">همه بازارها</option>
-      <option value="crypto">ارز دیجیتال</option>
-      <option value="forex">طلا و فارکس</option>
-      <option value="stocks">سهام</option>
-    </select>
-  </label>
-
-  <div id="ranking"></div>
+  <h2>رتبه‌بندی بازارها</h2>
 
   <p class="muted">
-    امتیازهای این بخش صرفاً نمونه نمایشی‌اند
-    و از قیمت زنده محاسبه نشده‌اند.
-  </p>
-</section>
-
-<section class="panel">
-  <h2>دارایی‌های من</h2>
-
-  <p class="muted">
-    موجودی واقعی حساب دریافت نمی‌شود.
-  </p>
-
-  <button id="demoAlert" class="secondary">
-    نمایش نمونه هشدار فروش
-  </button>
-
-  <div id="portfolioAlert" class="result">
-    هنوز هشداری نمایش داده نشده است.
-  </div>
-</section>
-
-<section class="panel">
-  <h2>دریافت داده واقعی ارز دیجیتال</h2>
-
-  <p class="muted">
-    منبع داده: API عمومی Kraken
-  </p>
-
-  <label>
-    ارز
-    <select id="liveSymbol">
-      <option value="XBTUSD">بیت‌کوین / دلار</option>
-      <option value="ETHUSD">اتریوم / دلار</option>
-      <option value="SOLUSD">سولانا / دلار</option>
-    </select>
-  </label>
-
-  <label>
-    بازه زمانی
-    <select id="liveInterval">
-      <option value="1">۱ دقیقه</option>
-      <option value="5">۵ دقیقه</option>
-      <option value="15" selected>۱۵ دقیقه</option>
-      <option value="60">۱ ساعت</option>
-      <option value="240">۴ ساعت</option>
-      <option value="1440">۱ روز</option>
-    </select>
-  </label>
-
-  <button id="fetchLive" class="primary">
-    دریافت و تحلیل داده واقعی
-  </button>
-
-  <div id="liveStatus" class="result">
-    برای دریافت داده دکمه بالا را بزنید.
-  </div>
-
-  <div id="liveAnalysis"></div>
-</section>
-
-<section class="panel">
-  <h2>موتور تحلیل نمودار CSV</h2>
-
-  <p class="muted">
-    فایل باید ستون‌های زیر را داشته باشد:
-    time,open,high,low,close,volume
-  </p>
-
-  <label>
-    نام بازار
-    <input id="assetName" value="بازار انتخابی">
-  </label>
-
-  <label>
-    تایم‌فریم
-    <select id="tf">
-      <option>1m</option>
-      <option>5m</option>
-      <option selected>15m</option>
-      <option>1h</option>
-      <option>4h</option>
-      <option>1d</option>
-    </select>
-  </label>
-
-  <label>
-    انتخاب فایل CSV
-    <input
-      type="file"
-      id="csvFile"
-      accept=".csv,text/csv"
-    >
-  </label>
-
-  <button id="analyzeCsv" class="primary">
-    تحلیل فایل کندل‌ها
-  </button>
-
-  <div id="engineResult" class="result">
-    حداقل ۵۰ کندل لازم است.
-  </div>
-</section>
-
-<section class="panel">
-  <h2>بک‌تست آزمایشی استراتژی‌ها</h2>
-
-  <label>
-    کارمزد هر سمت معامله (درصد)
-    <input
-      id="feePct"
-      type="number"
-      min="0"
-      max="5"
-      step="0.01"
-      value="0.1"
-    >
-  </label>
-
-  <button id="runBacktest" class="primary">
-    اجرای بک‌تست
-  </button>
-
-  <div id="backtestResults" class="result">
-    ابتدا یک فایل CSV با حداقل ۱۲۰ کندل انتخاب کنید.
-  </div>
-</section>
-
-<section class="panel">
-  <h2>آزمایش روش‌های معامله‌گران مشهور</h2>
-
-  <p class="muted">
-    مقایسه آموزشی سه روش:
-    شکست کانال،
-    پولبک EMA،
-    و Williams %R.
-  </p>
-
-  <button id="testFamous" class="primary">
-    مقایسه سه روش
-  </button>
-
-  <div id="famousResults" class="result">
-    برای این آزمایش حداقل ۲۰۰ کندل لازم است.
-  </div>
-</section>
-
-<section class="panel">
-  <h2>کتابخانه الگوهای معاملاتی</h2>
-
-  <input
-    id="patternSearch"
-    placeholder="جست‌وجوی الگو..."
-    style="width:100%"
-  >
-
-  <p id="patternCount" class="muted"></p>
-
-  <div id="patternList"></div>
-</section>
-
-<section class="panel">
-  <h2>وضعیت اتصال‌ها</h2>
-
-  <p>آبان‌تتر: ❌ متصل نیست</p>
-  <p>معاملات واقعی: ❌ غیرفعال</p>
-  <p>داده عمومی Kraken: دریافت دستی</p>
-  <p>تحلیل CSV: ✅ فعال</p>
-  <p>هوش مصنوعی آنلاین: ❌ متصل نیست</p>
-</section>
-
-<footer>
-  این برنامه برای آزمایش و آموزش است.
-  نتایج گذشته تضمین‌کننده سود آینده نیستند.
-</footer>
-
-</main>
-
-<script>
-"use strict";
-
-const $ = id => document.getElementById(id);
-
-const signals = [
-  {
-    symbol: "BTC / تومان",
-    side: "بررسی خرید",
-    risk: "low",
-    riskText: "پایین",
-    reason: "نمونه آموزشی؛ داده واقعی بررسی نشده است."
-  },
-  {
-    symbol: "ETH / تومان",
-    side: "بررسی فروش",
-    risk: "medium",
-    riskText: "متوسط",
-    reason: "نمونه آموزشی؛ داده واقعی بررسی نشده است."
-  },
-  {
-    symbol: "XAU / USD",
-    side: "عدم ورود",
-    risk: "high",
-    riskText: "بالا",
-    reason: "نمونه آموزشی؛ این بازار به منبع داده جدا نیاز دارد."
-  }
-];
-
-function renderSignals() {
-  const filter = $("filter").value;
-  const root = $("signals");
-
-  root.replaceChildren();
-
-  signals
-    .filter(x => filter === "all" || x.risk === filter)
-    .forEach(x => {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const title = document.createElement("h3");
-      title.textContent = x.symbol;
-
-      const side = document.createElement("p");
-      side.textContent =
-        x.side + " — ریسک " + x.riskText;
-
-      const details = document.createElement("p");
-      details.className = "muted";
-      details.textContent = x.reason;
-      details.hidden = true;
-
-      const info = document.createElement("button");
-      info.className = "secondary";
-      info.textContent = "جزئیات تحلیل";
-
-      info.onclick = () => {
-        details.hidden = !details.hidden;
-      };
-
-      const approve = document.createElement("button");
-      approve.className = "primary";
-      approve.textContent = "تأیید آزمایشی";
-      approve.disabled = x.risk === "high";
-
-      approve.onclick = () => {
-        $("toast").textContent =
-          "تأیید آزمایشی " + x.symbol +
-          " ثبت شد. هیچ سفارش واقعی ارسال نشد.";
-      };
-
-      const reject = document.createElement("button");
-      reject.className = "danger";
-      reject.textContent = "رد";
-
-      reject.onclick = () => {
-        $("toast").textContent =
-          "پیشنهاد نمونه " + x.symbol + " رد شد.";
-      };
-
-      card.append(
-        title,
-        side,
-        info,
-        approve,
-        reject,
-        details
-      );
-
-      root.append(card);
-    });
-}
-
-const markets = [
-  {
-    name: "بیت‌کوین",
-    market: "crypto",
-    score: 78
-  },
-  {
-    name: "اتریوم",
-    market: "crypto",
-    score: 70
-  },
-  {
-    name: "طلا",
-    market: "forex",
-    score: 62
-  },
-  {
-    name: "سهام منتخب",
-    market: "stocks",
-    score: 48
-  }
-];
-
-function renderRanking() {
-  const filter = $("marketFilter").value;
-  const root = $("ranking");
-
-  root.replaceChildren();
-
-  markets
-    .filter(x => filter === "all" || x.market === filter)
-    .sort((a, b) => b.score - a.score)
-    .forEach((x, index) => {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const title = document.createElement("strong");
-      title.textContent =
-        (index + 1) + ". " + x.name +
-        " — امتیاز فرضی " + x.score;
-
-      const bar = document.createElement("div");
-      bar.className = "bar";
-
-      const fill = document.createElement("div");
-      fill.className = "fill";
-      fill.style.width = x.score + "%";
-
-      bar.append(fill);
-      card.append(title, bar);
-      root.append(card);
-    });
-}
-
-const patterns = [
-  ["چکش", "سایه پایینی بلند و بدنه کوچک"],
-  ["چکش معکوس", "سایه بالایی بلند پس از افت"],
-  ["مرد دارآویز", "هشدار احتمالی ضعف روند صعودی"],
-  ["ستاره ثاقب", "سایه بالایی بلند در انتهای رشد"],
-  ["دوجی", "نشانه تردید بازار"],
-  ["ماروبوزو", "کندل با بدنه بزرگ"],
-  ["پوشای صعودی", "پوشش بدنه نزولی قبلی"],
-  ["پوشای نزولی", "پوشش بدنه صعودی قبلی"],
-  ["هارامی", "بدنه دوم درون بدنه اول"],
-  ["ستاره صبحگاهی", "الگوی سه‌کندلی صعودی"],
-  ["ستاره شامگاهی", "الگوی سه‌کندلی نزولی"],
-  ["سه سرباز سفید", "سه کندل صعودی"],
-  ["سه کلاغ سیاه", "سه کندل نزولی"],
-  ["سر و شانه", "الگوی احتمالی برگشت روند"],
-  ["سر و شانه معکوس", "الگوی احتمالی برگشت صعودی"],
-  ["سقف دوقلو", "دو بار آزمودن مقاومت"],
-  ["کف دوقلو", "دو بار آزمودن حمایت"],
-  ["مثلث متقارن", "فشردگی دامنه قیمت"],
-  ["مثلث صعودی", "مقاومت تقریباً افقی"],
-  ["مثلث نزولی", "حمایت تقریباً افقی"],
-  ["پرچم", "استراحت پس از حرکت سریع"],
-  ["کنج صعودی", "همگرایی خطوط روند"],
-  ["کنج نزولی", "همگرایی خطوط روند"],
-  ["مستطیل", "حرکت در محدوده رنج"],
-  ["کاپ و دسته", "ساختار گرد و پولبک"],
-  ["شکست و پولبک", "بازآزمایی سطح شکسته‌شده"],
-  ["شکست جعلی", "بازگشت قیمت به محدوده"],
-  ["واگرایی RSI", "اختلاف قیمت و مومنتوم"],
-  ["ساختار سقف و کف", "بررسی جهت روند"],
-  ["عرضه و تقاضا", "محدوده‌های واکنش تاریخی"]
-];
-
-function renderPatterns() {
-  const q = $("patternSearch").value.trim().toLowerCase();
-  const root = $("patternList");
-
-  root.replaceChildren();
-
-  const filtered = patterns.filter(x =>
-    (x[0] + " " + x[1]).toLowerCase().includes(q)
-  );
-
-  $("patternCount").textContent =
-    filtered.length + " الگو از " +
-    patterns.length + " الگو";
-
-  filtered.forEach(x => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const title = document.createElement("strong");
-    title.textContent = x[0];
-
-    const desc = document.createElement("p");
-    desc.className = "muted";
-    desc.textContent = x[1];
-
-    card.append(title, desc);
-    root.append(card);
-  });
-}
-
-function emaSeries(values, period) {
-  const result = [];
-  const k = 2 / (period + 1);
-
-  let previous = values[0];
-
-  values.forEach((value, i) => {
-    previous =
-      i === 0
-        ? value
-        : value * k + previous * (1 - k);
-
-    result.push(previous);
-  });
-
-  return result;
-}
-
-function rsiSeries(values, period = 14) {
-  const result = Array(values.length).fill(null);
-
-  if (values.length <= period) {
-    return result;
-  }
-
-  let gain = 0;
-  let loss = 0;
-
-  for (let i = 1; i <= period; i++) {
-    const change = values[i] - values[i - 1];
-
-    gain += Math.max(0, change);
-    loss += Math.max(0, -change);
-  }
-
-  gain /= period;
-  loss /= period;
-
-  for (let i = period; i < values.length; i++) {
-    if (i > period) {
-      const change = values[i] - values[i - 1];
-
-      gain =
-        (gain * (period - 1) +
-          Math.max(0, change)) / period;
-
-      loss =
-        (loss * (period - 1) +
-          Math.max(0, -change)) / period;
-    }
-
-    result[i] =
-      loss === 0
-        ? (gain === 0 ? 50 : 100)
-        : 100 - 100 / (1 + gain / loss);
-  }
-
-  return result;
-}
-
-function atr14(rows) {
-  if (rows.length < 15) {
-    return null;
-  }
-
-  const ranges = [];
-
-  for (let i = 1; i < rows.length; i++) {
-    const current = rows[i];
-    const previous = rows[i - 1];
-
-    ranges.push(
-      Math.max(
-        current.high - current.low,
-        Math.abs(current.high - previous.close),
-        Math.abs(current.low - previous.close)
-      )
-    );
-  }
-
-  let atr =
-    ranges.slice(0, 14).reduce((a, b) => a + b, 0) / 14;
-
-  for (let i = 14; i < ranges.length; i++) {
-    atr = (atr * 13 + ranges[i]) / 14;
-  }
-
-  return atr;
-}
-
-function detectPatterns(previous, current) {
-  if (!previous || !current) {
-    return [];
-  }
-
-  const found = [];
-
-  const range = current.high - current.low;
-  const body = Math.abs(current.close - current.open);
-
-  const upper =
-    current.high -
-    Math.max(current.open, current.close);
-
-  const lower =
-    Math.min(current.open, current.close) -
-    current.low;
-
-  if (range > 0 && body <= range * 0.1) {
-    found.push("دوجی");
-  }
-
-  if (
-    lower >= Math.max(body, 0.000000001) * 2 &&
-    upper <= Math.max(body, 0.000000001) * 0.6
-  ) {
-    found.push("چکش / مرد دارآویز");
-  }
-
-  if (
-    upper >= Math.max(body, 0.000
+    امتیازهای این قسمت فرضی هستند و بر اساس
+    داده زنده محاسبه نشده
