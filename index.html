@@ -2,10 +2,308 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Daniel Trader Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Daniel Trader Pro V8</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0c1220;
+  color: #f4f7fc;
+  font-family: Tahoma, Arial, sans-serif;
+  line-height: 1.8;
+}
+
+main {
+  max-width: 760px;
+  margin: auto;
+  padding: 20px 15px 60px;
+}
+
+h1 {
+  color: #62d4a1;
+  font-size: 25px;
+}
+
+h2 {
+  font-size: 19px;
+  margin-top: 0;
+}
+
+.panel {
+  background: #172235;
+  border: 1px solid #34445a;
+  border-radius: 16px;
+  padding: 17px;
+  margin: 16px 0;
+}
+
+.warning {
+  border-right: 4px solid #eab308;
+}
+
+.muted {
+  color: #b2bfd1;
+  font-size: 14px;
+}
+
+button {
+  background: #62d4a1;
+  color: #082218;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 15px;
+  margin: 7px 0;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+input, select {
+  width: 100%;
+  padding: 11px;
+  margin: 7px 0 13px;
+  border: 1px solid #53647b;
+  border-radius: 9px;
+  background: #101b2c;
+  color: white;
+  font-size: 15px;
+}
+
+.result {
+  background: #101b2c;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.card {
+  background: #101b2c;
+  border: 1px solid #34445a;
+  padding: 13px;
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+.good {
+  color: #62d4a1;
+}
+
+.bad {
+  color: #ff9b9b;
+}
+
+footer {
+  color: #a9b5c8;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 30px;
+}
+</style>
 </head>
+
 <body>
-<h1>Daniel Trader Pro</h1>
-<p>برنامه دانیال تریدر پرو آماده راه‌اندازی است.</p>
-</body>
-</html>
+<main>
+
+<header>
+  <h1>Daniel Trader Pro</h1>
+  <p>دستیار تحلیل بازار — نسخه هشتم</p>
+</header>
+
+<section class="panel warning">
+  <h2>وضعیت برنامه</h2>
+  <p>
+    این نسخه برای تحلیل و آزمایش است.
+    معاملات واقعی غیرفعال هستند.
+  </p>
+  <p>
+    اتصال حساب آبان‌تتر هنوز برقرار نشده است.
+    هیچ سفارش خرید یا فروشی ارسال نمی‌شود.
+  </p>
+</section>
+
+<section class="panel">
+  <h2>وضعیت اجرای برنامه</h2>
+  <div id="health" class="result">
+    در انتظار اجرای جاوااسکریپت...
+  </div>
+</section>
+
+<section class="panel">
+  <h2>دریافت داده واقعی بازار</h2>
+
+  <p class="muted">
+    منبع داده: API عمومی Kraken.
+    قیمت‌ها دلاری هستند و ممکن است
+    با قیمت آبان‌تتر متفاوت باشند.
+  </p>
+
+  <label for="symbol">انتخاب ارز</label>
+  <select id="symbol">
+    <option value="XBTUSD">بیت‌کوین</option>
+    <option value="ETHUSD">اتریوم</option>
+    <option value="SOLUSD">سولانا</option>
+  </select>
+
+  <label for="interval">بازه زمانی</label>
+  <select id="interval">
+    <option value="1">۱ دقیقه</option>
+    <option value="5">۵ دقیقه</option>
+    <option value="15" selected>۱۵ دقیقه</option>
+    <option value="60">۱ ساعت</option>
+    <option value="240">۴ ساعت</option>
+    <option value="1440">روزانه</option>
+  </select>
+
+  <button id="fetchBtn" onclick="fetchMarket()">
+    دریافت و تحلیل بازار
+  </button>
+
+  <div id="marketResult" class="result">
+    هنوز داده‌ای دریافت نشده است.
+  </div>
+</section>
+
+<section class="panel">
+  <h2>موتور تحلیل فایل CSV</h2>
+
+  <p class="muted">
+    فایل باید ستون‌های
+    open, high, low, close, volume
+    داشته باشد.
+    ترتیب کندل‌ها از قدیمی به جدید باشد.
+  </p>
+
+  <input
+    id="csvFile"
+    type="file"
+    accept=".csv,text/csv"
+  >
+
+  <button onclick="analyzeCSV()">
+    تحلیل فایل
+  </button>
+
+  <div id="csvResult" class="result">
+    فایلی انتخاب نشده است.
+  </div>
+</section>
+
+<section class="panel">
+  <h2>بک‌تست استراتژی</h2>
+
+  <p class="muted">
+    آزمایش تقاطع EMA20 و EMA50
+    روی داده تاریخی.
+    نتیجه، پیش‌بینی سود آینده نیست.
+  </p>
+
+  <label for="fee">کارمزد هر سمت معامله (%)</label>
+  <input
+    id="fee"
+    type="number"
+    min="0"
+    max="5"
+    step="0.01"
+    value="0.1"
+  >
+
+  <button onclick="runBacktest()">
+    اجرای بک‌تست
+  </button>
+
+  <div id="backtestResult" class="result">
+    ابتدا فایل CSV با حداقل ۱۲۰ کندل وارد کن.
+  </div>
+</section>
+
+<section class="panel">
+  <h2>رتبه‌بندی نمایشی بازارها</h2>
+
+  <p class="muted">
+    امتیازهای این بخش نمونه آموزشی‌اند،
+    نه نتیجه تحلیل لحظه‌ای.
+  </p>
+
+  <select id="marketFilter" onchange="renderRanking()">
+    <option value="all">همه بازارها</option>
+    <option value="crypto">ارز دیجیتال</option>
+    <option value="forex">طلا و فارکس</option>
+    <option value="stocks">سهام</option>
+  </select>
+
+  <div id="ranking"></div>
+</section>
+
+<section class="panel">
+  <h2>وضعیت اتصال آبان‌تتر</h2>
+
+  <p class="bad">
+    متصل نیست
+  </p>
+
+  <p>
+    برای دریافت موجودی حساب و ثبت سفارش،
+    اتصال API از طریق یک سرور امن لازم است.
+  </p>
+
+  <p class="muted">
+    کلید API را داخل این فایل یا
+    مخزن عمومی GitHub قرار نده.
+  </p>
+</section>
+
+<footer>
+  Daniel Trader Pro V8
+  <br>
+  نسخه آزمایشی — بدون معامله واقعی
+</footer>
+
+</main>
+
+<script>
+"use strict";
+
+let currentRows = [];
+
+const $ = id => document.getElementById(id);
+
+function numberFormat(value) {
+  if (!Number.isFinite(value)) {
+    return "نامشخص";
+  }
+
+  return value.toLocaleString("fa-IR", {
+    maximumFractionDigits: 5
+  });
+}
+
+function emaSeries(values, period) {
+  if (!values.length) return [];
+
+  const result = [];
+  const multiplier = 2 / (period + 1);
+
+  let previous = values[0];
+
+  for (let i = 0; i < values.length; i++) {
+    previous = i === 0
+      ? values[i]
+      : values[i] * multiplier +
+        previous * (1 - multiplier);
+
+    result.push(previous);
+  }
+
+ 
