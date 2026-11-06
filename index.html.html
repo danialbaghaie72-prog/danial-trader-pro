@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Daniel Trader Pro v8</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0c1220;
+  color: #f4f7fc;
+  font-family: Tahoma, Arial, sans-serif;
+  line-height: 1.8;
+}
+
+main {
+  max-width: 720px;
+  margin: auto;
+  padding: 18px 14px 50px;
+}
+
+h1 {
+  font-size: 25px;
+  margin: 0;
+  color: #62d4a1;
+}
+
+h2 {
+  font-size: 19px;
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+small,
+.muted {
+  color: #a9b5c8;
+}
+
+.panel {
+  background: #172235;
+  border: 1px solid #34445a;
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 15px;
+}
+
+.notice {
+  border-right: 4px solid #eab308;
+}
+
+.success {
+  color: #62d4a1;
+}
+
+.warning {
+  color: #ffd27a;
+}
+
+button {
+  background: #62d4a1;
+  color: #082218;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px 0;
+  min-height: 44px;
+}
+
+button.secondary {
+  background: #2b3a50;
+  color: white;
+}
+
+button.danger {
+  background: #63313a;
+  color: #ffe0e5;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+input,
+select {
+  background: #101b2c;
+  color: white;
+  border: 1px solid #526075;
+  border-radius: 9px;
+  padding: 10px;
+  font-size: 15px;
+  max-width: 100%;
+}
+
+input[type="number"],
+input[type="text"],
+input[type="search"] {
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+.card {
+  background: #101b2c;
+  border: 1px solid #34445a;
+  border-radius: 12px;
+  padding: 13px;
+  margin: 10px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.metric {
+  background: #101b2c;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.metric strong {
+  display: block;
+  color: #62d4a1;
+}
+
+.bar {
+  height: 8px;
+  background: #34445a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #62d4a1;
+}
+
+.result {
+  margin-top: 12px;
+  padding: 12px;
+  background: #101b2c;
+  border-radius: 10px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+footer {
+  color: #a9b5c8;
+  font-size: 12px;
+  margin-top: 25px;
+}
+
+@media (max-width: 380px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main>
+
+<header>
+  <h1>Daniel Trader Pro</h1>
+  <small>نسخه ۸ — دستیار تحلیل بازار</small>
+</header>
+
+<section class="panel notice">
+  <strong>حالت آزمایشی</strong>
+  <p>
+    این برنامه به حساب آبان‌تتر متصل نیست.
+    هیچ خرید یا فروش واقعی انجام نمی‌دهد.
+    سیگنال‌های نمونه صرفاً آموزشی هستند.
+  </p>
+</section>
+
+<section class="panel">
+  <h2>وضعیت اجرای برنامه</h2>
+
+  <p id="appHealth" class="warning">
+    ⚠️ در انتظار اجرای جاوااسکریپت...
+  </p>
+
+  <p id="errorStatus" class="muted"></p>
+</section>
+
+<section class="panel">
+  <h2>نمای کلی</h2>
+
+  <div class="grid">
+    <div class="metric">
+      <small>وضعیت موتور</small>
+      <strong id="engineState">در انتظار</strong>
+    </div>
+
+    <div class="metric">
+      <small>معاملات واقعی</small>
+      <strong>غیرفعال</strong>
+    </div>
+
+    <div class="metric">
+      <small>سیگنال‌های نمونه</small>
+      <strong>۳</strong>
+    </div>
+
+    <div class="metric">
+      <small>داده عمومی</small>
+      <strong>Kraken</strong>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>فرصت‌های معاملاتی نمونه</h2>
+
+  <label>
+    فیلتر ریسک
+    <select id="filter">
+      <option value="all">همه</option>
+      <option value="low">پایین</option>
+      <option value="medium">متوسط</option>
+      <option value="high">بالا</option>
+    </select>
+  </label>
+
+  <div id="signals"></div>
+  <p id="toast" class="success"></p>
+</section>
+
+<section class="panel">
+  <h2>رتبه‌بندی بازارها</h2>
+
+  <p class="muted">
+    امتیازهای این قسمت فرضی هستند و بر اساس
+    داده زنده محاسبه نشده‌اند.
+  </p>
+
+  <label>
+    انتخاب بازار
+    <select id="marketFilter">
+      <option value="all">همه بازارها</option>
+      <option value="crypto">ارز دیجیتال</option>
+      <option value="forex">طلا و فارکس</option>
+      <option value="stocks">سهام</option>
+    </select>
+  </label>
+
+  <div id="ranking"></div>
+</section>
+
+<section class="panel">
+  <h2>دارایی‌های من</h2>
+
+  <p class="muted">
+    حساب واقعی متصل نیست و اطلاعات دارایی
+    دریافت نشده است.
+  </p>
+
+  <button id="demoAlert" class="secondary">
+    نمایش نمونه هشدار فروش
+  </button>
+
+  <div id="portfolioAlert" class="result"></div>
+</section>
+
+<section class="panel">
+  <h2>دریافت داده واقعی ارز دیجیتال</h2>
+
+  <p class="muted">
+    داده عمومی کندل‌ها از Kraken دریافت می‌شود.
+    این بخش به آبان‌تتر متصل نیست.
+  </p>
+
+  <label>
+    ارز
+    <select id="liveSymbol">
+      <option value="XBTUSD">بیت‌کوین / دلار</option>
+      <option value="ETHUSD">اتریوم / دلار</option>
+      <option value="SOLUSD">سولانا / دلار</option>
+    </select>
+  </label>
+
+  <label>
+    تایم‌فریم
+    <select id="liveInterval">
+      <option value="1">۱ دقیقه</option>
+      <option value="5">۵ دقیقه</option>
+      <option value="15" selected>۱۵ دقیقه</option>
+      <option value="60">۱ ساعت</option>
+      <option value="240">۴ ساعت</option>
+      <option value="1440">۱ روز</option>
+    </select>
+  </label>
+
+  <button id="fetchLive">
+    دریافت و تحلیل داده واقعی
+  </button>
+
+  <div id="liveStatus" class="result">
+    هنوز درخواستی ارسال نشده است.
+  </div>
+
+  <div id="liveAnalysis"></div>
+</section>
+
+<section class="panel">
+  <h2>موتور تحلیل نمودار CSV</h2>
+
+  <p class="muted">
+    فایل CSV باید دارای ستون‌های
+    time,open,high,low,close,volume
+    باشد.
+  </p>
+
+  <label>
+    نام بازار
+    <input id="assetName" type="text" value="بازار انتخابی">
+  </label>
+
+  <label>
+    تایم‌فریم
+    <select id="tf">
+      <option>1m</option>
+      <option>5m</option>
+      <option selected>15m</option>
+      <option>1h</option>
+      <option>4h</option>
+      <option>1d</option>
+    </select>
+  </label>
+
+  <label>
+    انتخاب فایل CSV
+    <input id="csvFile" type="file" accept=".csv,text/csv">
+  </label>
+
+  <button id="analyzeCsv">
+    تحلیل فایل کندل‌ها
+  </button>
+
+  <div id="engineResult" class="result">
+    حداقل ۵۰ کندل معتبر لازم است.
+  </div>
+</section>
+
+<section class="panel">
+  <h2>بک‌تست استراتژی‌ها</h2>
+
+  <label>
+    کارمزد هر سمت معامله (درصد)
+    <input
+      id="feePct"
+      type="number"
+      value="0.1"
+      min="0"
+      max="5"
+      step="0.01"
+    >
+  </label>
+
+  <button id="runBacktest">
+    اجرای بک‌تست
+  </button>
+
+  <div id="backtestResults" class="result">
+    ابتدا فایل CSV حداقل ۱۲۰ کندلی انتخاب کنید.
+  </div>
+</section>
+
+<section class="panel">
+  <h2>روش‌های معامله‌گران مشهور</h2>
+
+  <p class="muted">
+    مقایسه سه روش آموزشی:
+    شکست کانال، پولبک EMA و Williams %R.
+  </p>
+
+  <button id="testFamous">
+    آزمایش و مقایسه سه روش
+  </button>
+
+  <div id="famousResults" class="result">
+    برای این بخش حداقل ۲۰۰ کندل لازم است.
+  </div>
+</section>
+
+<section class="panel">
+  <h2>کتابخانه الگوهای معاملاتی</h2>
+
+  <input
+    id="patternSearch"
+    type="search"
+    placeholder="جست‌وجوی نام الگو..."
+  >
+
+  <p id="patternCount" class="muted"></p>
+  <div id="patternList"></div>
+</section>
+
+<section class="panel">
+  <h2>وضعیت اتصال‌ها</h2>
+
+  <p>آبان‌تتر: <strong class="warning">متصل نیست</strong></p>
+  <p>Kraken: <strong>دریافت عمومی و دستی</strong></p>
+  <p>معامله واقعی: <strong class="warning">غیرفعال</strong></p>
+  <p>هوش مصنوعی آنلاین: <strong class="warning">متصل نیست</strong></p>
+</section>
+
+<footer>
+  Daniel Trader Pro v8 — نسخه آزمایشی.
+  نتایج تحلیل و بک‌تست تضمین‌کننده سود نیستند.
+</footer>
+
+</main>
+
+<script>
+"use strict";
+
+/* =========================
+   بررسی اجرای جاوااسکریپت
+========================= */
+
+const health = document.getElementById("appHealth");
+const engineState = document.getElementById("engineState");
+
+health.textContent = "✅ موتور جاوااسکریپت اجرا شد.";
+health.className = "success";
+engineState.textContent = "فعال";
+
+window.addEventListener("error", function(event) {
+  const box = document.getElementById("errorStatus");
+
+  if (box) {
+    box.textContent = "خطای برنامه: " + event.message;
+  }
+});
+
+/* =========================
+   ابزارهای عمومی
+========================= */
+
+function byId(id) {
+  return document.getElementById(id);
+}
+
+function formatNumber(value) {
+  if (!Number.isFinite(value)) return "نامشخص";
+
+  return value.toLocaleString("fa-IR", {
+    maximumFractionDigits: 5
+  });
+}
+
+function makeCard(title, description) {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const h = document.createElement("h3");
+  h.textContent = title;
+
+  const p = document.createElement("p");
+  p.textContent = description;
+
+  card.append(h, p);
+  return card;
+}
+
+/* =========================
+   سیگنال‌های نمونه
+========================= */
+
+const items = [
+  {
+    symbol: "BTC / تومان",
+    side: "بررسی خرید",
+    risk: "low",
+    riskText: "پایین",
+    entry: "۱۰۰ واحد فرضی",
+    stop: "۹۸ واحد فرضی",
+    target: "۱۰۴ واحد فرضی"
+  },
+  {
+    symbol: "ETH / تومان",
+    side: "بررسی فروش",
+    risk: "medium",
+    riskText: "متوسط",
+    entry: "۱۰۰ واحد فرضی",
+    stop: "۱۰۲ واحد فرضی",
+    target: "۹۶ واحد فرضی"
+  },
+  {
+    symbol: "XAU / USD",
+    side: "عدم ورود",
+    risk: "high",
+    riskText: "بالا",
+    entry: "نامشخص",
+    stop: "نامشخص",
+    target: "نامشخص"
+  }
+];
+
+function renderSignals() {
+  const filter = byId("filter").value;
+  const root = byId("signals");
+
+  root.replaceChildren();
+
+  const filtered = items.filter(function(item) {
+    return filter === "all" || item.risk === filter;
+  });
+
+  filtered.forEach(function(item) {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const title = document.createElement("h3");
+    title.textContent = item.symbol;
+
+    const info = document.createElement("p");
+
+    info.textContent =
+      item.side +
+      " | ریسک: " + item.riskText +
+      " | ورود: " + item.entry +
+      " | حد ضرر: " + item.stop +
+      " | حد سود: " + item.target;
+
+    const approve = document.createElement("button");
+    approve.textContent = "تأیید آزمایشی";
+    approve.disabled = item.risk === "high";
+
+    approve.addEventListener("click", function() {
+      byId("toast").textContent =
+        "تأیید آزمایشی " +
+        item.symbol +
+        " ثبت شد. هیچ سفارش واقعی ارسال نشد.";
+    });
+
+    const reject = document.createElement("button");
+    reject.textContent = "رد";
+    reject.className = "danger";
+
+    reject.addEventListener("click", function() {
+      byId("toast").textContent =
+        "پیشنهاد نمونه " + item.symbol + " رد شد.";
+    });
+
+    card.append(title, info, approve, reject);
+    root.append(card);
+  });
+}
+
+byId("filter").addEventListener("change", renderSignals);
+renderSignals();
+
+/* =========================
+   رتبه‌بندی بازارها
+========================= */
+
+const markets = [
+  {
+    name: "بیت‌کوین",
+    market: "crypto",
+    score: 78,
+    risk: "متوسط"
+  },
+  {
+    name: "اتریوم",
+    market: "crypto",
+    score: 70,
+    risk: "متوسط"
+  },
+  {
+    name: "طلا XAU/USD",
+    market: "forex",
+    score: 62,
+    risk: "بالا"
+  },
+  {
+    name: "سهام منتخب",
+    market: "stocks",
+    score: 48,
+    risk: "بالا"
+  }
+];
+
+function renderRanking() {
+  const filter = byId("marketFilter");
+  const root = byId("ranking");
+
+  if (!filter || !root) {
+    return;
+  }
+
+  root.replaceChildren();
+
+  const selected = markets
+    .filter(function(market) {
+      return filter.value === "all" ||
+        market.market === filter.value;
+    })
+    .sort(function(a, b) {
+      return b.score - a.score;
+    });
+
+  selected.forEach(function(market, index) {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const title = document.createElement("strong");
+
+    title.textContent =
+      (index + 1) + ". " +
+      market.name +
+      " — امتیاز فرضی " +
+      market.score + " از ۱۰۰";
+
+    const risk = document.createElement("p");
+    risk.textContent = "ریسک نمایشی: " + market.risk;
+
+    const bar = document.createElement("div");
+    bar.className = "bar";
+
+    const fill = document.createElement("div");
+    fill.className = "fill";
+    fill.style.width = market.score + "%";
+
+    bar.append(fill);
+    card.append(title, risk, bar);
+    root.append(card);
+  });
+}
+
+byId("marketFilter").addEventListener(
+  "change",
+  renderRanking
+);
+
+renderRanking();
+
+/* =========================
+   هشدار نمونه دارایی
+========================= */
+
+byId("demoAlert").addEventListener("click", function() {
+  byId("portfolioAlert").textContent =
+    "هشدار آزمایشی: احتمال اصلاح قیمت یک دارایی فرضی. " +
+    "این پیام بر اساس موجودی واقعی شما نیست.";
+});
+
+/* =========================
+   اندیکاتورها
+========================= */
+
+function emaSeries(values, period) {
+  const result = [];
+  const k = 2 / (period + 1);
+
+  let previous = values[0];
+
+  values.forEach(function(value, index) {
+    previous = index === 0
+      ? value
+      : value * k + previous * (1 - k);
+
+    result.push(previous);
+  });
+
+  return result;
+}
+
+function rsiSeries(values, period = 14) {
+  const result = Array(values.length).fill(null);
+
+  if (values.length <= period) {
+    return result;
+  }
+
+  let gains = 0;
+  let losses = 0;
+
+  for (let i = 1; i <= period; i++) {
+    const change = values[i] - values[i - 1];
+
+    gains += Math.max(0, change);
+    losses += Math.max(0, -change);
+  }
+
+  gains /= period;
+  losses /= period;
+
+  for (let i = period; i < values.length; i++) {
+    if (i > period) {
+      const change = values[i] - values[i - 1];
+
+      gains =
+        (gains * (period - 1) + Math.max(0, change)) /
+        period;
+
+      losses =
+        (losses * (period - 1) + Math.max(0, -change)) /
+        period;
+    }
+
+    result[i] = losses === 0
+      ? gains === 0 ? 50 : 100
+      : 100 - 100 / (1 + gains / losses);
+  }
+
+  return result;
+}
+
+function atr14(rows) {
+  if (rows.length < 15) return null;
+
+  const tr = [];
+
+  for (let i = 1; i < rows.length; i++) {
+    tr.push(
+      Math.max(
+        rows[i].high - rows[i].low,
+        Math.abs(rows[i].high - rows[i - 1].close),
+        Math.abs(rows[i].low - rows[i - 1].close)
+      )
+    );
+  }
+
+  let atr = tr.slice(0, 14).reduce(function(a, b) {
+    return a + b;
+  }, 0) / 14;
+
+  for (let i = 14; i < tr.length; i++) {
+    atr = (atr * 13 + tr[i]) / 14;
+  }
+
+  return atr;
+}
+
+function williamsSeries(rows, period = 14) {
+  return rows.map(function(row, index) {
+    if (index < period - 1) return null;
+
+    let highest = -Infinity;
+    let lowest = Infinity;
+
+    for (
+      let j = index - period + 1;
+      j <= index;
+      j++
+    ) {
+      highest = Math.max(highest, rows[j].high);
+      lowest = Math.min(lowest, rows[j].low);
+    }
+
+    if (highest === lowest) return -50;
+
+    return -100 *
+      (highest - row.close) /
+      (highest - lowest);
+  });
+}
+
+/* =========================
+   تشخیص الگوهای کندلی
+========================= */
+
+function detectPatterns(previous, current) {
+  const found = [];
+
+  const range = current.high - current.low;
+  const body = Math.abs(current.close - current.open);
+
+  const upper =
+    current.high -
+    Math.max(current.open, current.close);
+
+  const lower =
+    Math.min(current.open, current.close) -
+    current.low;
+
+  if (range > 0 && body <= range * 0.1) {
+    found.push("دوجی");
+  }
+
+  if (
+    lower >= Math.max(body, 0.000001) * 2 &&
+    upper
